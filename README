@@ -1,0 +1,27 @@
+A simple visual CPU performance indicator, designed to look like the
+original (but apparently never released) Sun Solaris perfbar, but
+using GTK for display.
+
+Color scheme:
+  Blue:   Idle
+  Green:  User
+  Red:    System (kernel)
+  Yellow: Other (nice, iowait)
+
+If the prebuilt versions don't work for you, type one of
+  make solaris_sparc_perfbar
+  make solaris_x86_perfbar
+  make linux_perfbar
+or edit the make file and add a target.
+
+You can rename the binaries to just "perfbar". I do.
+
+To port it to other machines, you'd have to figure out how to
+implement "get_times". It would be nice to use libgtop for this, but
+libgtop didn't work right on machines I tried to run this on.
+
+
+
+
+
+
