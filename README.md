@@ -34,7 +34,23 @@ Now you have a **linux_perfbar** binary.
 
     ![screenshot](screenshot.png)
 
-### Notes
+### How to interpret perfbar
+
+* Each vertical bar represents one CPU in /proc/stat
+* If hyperthreading is enabled, each hyperthread counts as one CPU
+* Blue is idle time
+* Green is user time
+* Red is system time (i.e. in the kernel)
+* White is other time (i/o time and nice time)
+
+### Implementation notes
+
+* The function get_times() is system-specific.  This is where Linux /proc/stat is read.
+* /proc/stat contains monotonically increasing tick counts for each CPU
+* See <http://www.linuxhowtos.org/System/procstat.htm> for /proc/stat documentation
+* The display is updated 5 times a second, and would appear very jagged if the raw data were displayed.  A smoothing function is applied to assist visualization.
+
+### Miscellaneous
 
 It's worth pointing out that a **linux_perfbar** built on Centos 6.5 runs fine on this version of Ubuntu.
 
