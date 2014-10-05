@@ -33,3 +33,14 @@ Now you have a **linux_perfbar** binary.
 `$ ./linux_perfbar`  
 
     ![screenshot](screenshot.png)
+
+### Notes
+
+It's worth pointing out that a **linux_perfbar** built on Centos 6.5 runs fine on this version of Ubuntu.
+
+`$ cat /etc/lsb-release`  
+
+    DISTRIB_ID=Ubuntu  
+    DISTRIB_RELEASE=12.04  
+    DISTRIB_CODENAME=precise  
+    DISTRIB_DESCRIPTION="Ubuntu 12.04.5 LTS"  
