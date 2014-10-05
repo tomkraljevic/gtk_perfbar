@@ -393,6 +393,12 @@ static void get_times(perfbar_panel* panel) {
   len = read(fd, pstat_buf, PBSIZE-1);
   pstat_buf[len] = 0;
   p = &(pstat_buf[0]);
+
+  if (strncmp(p, "cpu ", 4) == 0) {
+    /* skip first line, which is an aggregate of all cpus. */
+    while (*p != '\n') p++;
+    p++;
+  }
   
   for (i = 0; i < panel->ncpus; ++i) {
     while (*p != ' ' && *p != 0) ++p;
