@@ -14,6 +14,12 @@
 #include <string.h>
 #include <sys/fcntl.h>
 #include <sys/sysinfo.h>
+
+#ifdef CUDA
+#include <assert.h>
+#include "nvml.h"
+#endif
+
 extern void abort(void);
 
 #ifdef SOLARIS
@@ -83,7 +89,16 @@ int main(int argc, char **argv) {
   GtkWidget *window;
   perfbar_panel *panel;
 
+#ifdef CUDA
+  nvmlReturn_t rv;
+  rv = nvmlInit();
+  assert(rv == NVML_SUCCESS);
+  unsigned int n;
+  rv = nvmlDeviceGetCount(&n);
+  assert(rv == NVML_SUCCESS);
+#else
   int n = (int)(sysconf(_SC_NPROCESSORS_CONF));
+#endif
     
   gtk_init(&argc, &argv);
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -374,6 +389,21 @@ static gint expose_cb(GtkWidget *w, GdkEventExpose* e, gpointer data)
   return FALSE;
 }
 
+#ifdef CUDA
+static void get_times(perfbar_panel* panel) {
+  for (int i = 0; i < panel->ncpus; ++i) {
+    nvmlDevice_t device;
+    nvmlReturn_t rv;
+    rv = nvmlDeviceGetHandleByIndex(i, &device);
+    assert(rv == NVML_SUCCESS);
+    nvmlUtilization_t utilization;
+    rv = nvmlDeviceGetUtilizationRates(device, &utilization);
+    assert(rv == NVML_SUCCESS);
+    int gpu = utilization.gpu;
+    printf("%d : %d\n", i, gpu);
+  }
+}
+#endif
 
 #ifdef LINUX
 /* PBSIZE should be much more than enough to read lines from proc */
