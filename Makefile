@@ -17,4 +17,5 @@ solaris_sparc_perfbar: perfbar.c Makefile
 solaris_x86_perfbar: perfbar.c Makefile
 	gcc -O -DSOLARIS $(CFLAGS) $(LDFLAGS) -lkstat -o solaris_x86_perfbar perfbar.c 
 
-
+clean:
+	rm -f perfbar.o linux_perfbar
