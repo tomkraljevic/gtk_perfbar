@@ -390,7 +390,19 @@ static gint expose_cb(GtkWidget *w, GdkEventExpose* e, gpointer data)
 }
 
 #ifdef CUDA
+
+int initialized = 0;
+
+#define MAX_GPUS 128
+struct cpu_times counts[MAX_GPUS];
+
 static void get_times(perfbar_panel* panel) {
+  if (! initialized) {
+    assert(panel->ncpus < MAX_GPUS);
+    memset(counts, 0, sizeof(counts));
+    initialized = 1;
+  }
+
   for (int i = 0; i < panel->ncpus; ++i) {
     nvmlDevice_t device;
     nvmlReturn_t rv;
@@ -399,10 +411,14 @@ static void get_times(perfbar_panel* panel) {
     nvmlUtilization_t utilization;
     rv = nvmlDeviceGetUtilizationRates(device, &utilization);
     assert(rv == NVML_SUCCESS);
-    int gpu = utilization.gpu;
-    printf("%d : %d\n", i, gpu);
+    int gpu_percent_usage = utilization.gpu;
+    counts[i].user += gpu_percent_usage;
+    counts[i].idle += (100 - gpu_percent_usage);
+    panel->current[i].user = counts[i].user;
+    panel->current[i].idle = counts[i].idle;
   }
 }
+
 #endif
 
 #ifdef LINUX
