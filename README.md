@@ -4,6 +4,13 @@ Minor updates to Doug Lea's GTK perfbar application for Linux.
 
 Code originally from <http://gee.cs.oswego.edu/dl/code/>.
 
+### CentOS 7 Linux (running in docker) building instructions
+
+`$ make centos7_cuda8_in_docker`
+
+This makes the **linux_perfbar** and **cuda_perfbar** binaries.
+
+This works for both the x86_64 and ppc64le architectures.
 
 ### Linux building instructions
 

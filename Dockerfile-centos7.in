@@ -1,0 +1,6 @@
+FROM FROM_SUBST
+
+MAINTAINER TomKraljevic <tomk@tomk.net>
+
+RUN yum groupinstall -y "Development Tools"
+RUN yum install -y gtk2-devel

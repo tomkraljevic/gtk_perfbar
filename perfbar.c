@@ -11,7 +11,9 @@
 #include <gtk/gtk.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <sys/fcntl.h>
 #include <sys/sysinfo.h>
 
@@ -92,6 +94,10 @@ int main(int argc, char **argv) {
 #ifdef CUDA
   nvmlReturn_t rv;
   rv = nvmlInit();
+  if (rv != NVML_SUCCESS) {
+    printf("ERROR: nvmlInit failed (%d)\n", (int)rv);
+    exit(1);
+  }
   assert(rv == NVML_SUCCESS);
   unsigned int n;
   rv = nvmlDeviceGetCount(&n);
